@@ -25,6 +25,6 @@ namespace _24_NguyenManhCuong_Assignment01_FrontEnd.Models
         public CategoryViewModel? ParentCategory { get; set; }
 
         [Display(Name = "Status")]
-        public bool? IsActive { get; set; } = true;
+        public bool IsActive { get; set; } = true;
     }
 }

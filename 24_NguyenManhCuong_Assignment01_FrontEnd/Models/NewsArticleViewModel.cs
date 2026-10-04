@@ -35,7 +35,7 @@ namespace _24_NguyenManhCuong_Assignment01_FrontEnd.Models
         public short? CategoryID { get; set; }
 
         [Display(Name = "Status (Active/Published)")]
-        public bool? NewsStatus { get; set; } = true;
+        public bool NewsStatus { get; set; } = true;
 
         public short? CreatedByID { get; set; }
         public short? UpdatedByID { get; set; }

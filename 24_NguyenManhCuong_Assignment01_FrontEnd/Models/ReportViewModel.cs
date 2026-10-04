@@ -17,7 +17,7 @@ namespace _24_NguyenManhCuong_Assignment01_FrontEnd.Models
         public List<NewsArticleViewModel> Articles { get; set; } = new List<NewsArticleViewModel>();
 
         public int TotalArticles => Articles.Count;
-        public int ActiveArticles => Articles.Count(a => a.NewsStatus == true);
-        public int InactiveArticles => Articles.Count(a => a.NewsStatus != true);
+        public int ActiveArticles => Articles.Count(a => a.NewsStatus);
+        public int InactiveArticles => Articles.Count(a => !a.NewsStatus);
     }
 }
