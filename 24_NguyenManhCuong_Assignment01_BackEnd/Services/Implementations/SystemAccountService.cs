@@ -1,6 +1,7 @@
 using _24_NguyenManhCuong_Assignment01_BackEnd.Models;
 using _24_NguyenManhCuong_Assignment01_BackEnd.Repositories.Interfaces;
 using _24_NguyenManhCuong_Assignment01_BackEnd.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace _24_NguyenManhCuong_Assignment01_BackEnd.Services.Implementations
 {
@@ -23,6 +24,13 @@ namespace _24_NguyenManhCuong_Assignment01_BackEnd.Services.Implementations
 
         public async Task<SystemAccount> CreateAsync(SystemAccount account)
         {
+            if (account.AccountID <= 0)
+            {
+                var ids = await _repository.GetAll().Select(a => (short?)a.AccountID).ToListAsync();
+                short maxId = ids.Any() && ids.Max().HasValue ? ids.Max()!.Value : (short)0;
+                account.AccountID = (short)(maxId + 1);
+            }
+
             await _repository.AddAsync(account);
             await _repository.SaveChangesAsync();
             return account;

@@ -24,6 +24,10 @@ odataModelBuilder.EntitySet<Category>("Categories");
 odataModelBuilder.EntitySet<NewsArticle>("NewsArticles");
 odataModelBuilder.EntitySet<Tag>("Tags");
 
+var newsTagType = odataModelBuilder.EntityType<NewsTag>();
+newsTagType.HasKey(nt => new { nt.NewsArticleID, nt.TagID });
+odataModelBuilder.EntitySet<NewsTag>("NewsTags");
+
 // ===================== CONTROLLERS + ODATA =====================
 builder.Services.AddControllers()
     .AddOData(options =>
@@ -88,6 +92,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "FUNewsManagement API", Version = "v1" });
+    c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
     c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme. Enter 'Bearer {token}'",
@@ -125,5 +130,6 @@ app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.MapGet("/", () => Results.Redirect("/swagger"));
 
 app.Run();

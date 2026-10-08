@@ -18,6 +18,15 @@ namespace _24_NguyenManhCuong_Assignment01_BackEnd.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // Non-identity keys
+            modelBuilder.Entity<SystemAccount>()
+                .Property(a => a.AccountID)
+                .ValueGeneratedNever();
+
+            modelBuilder.Entity<Tag>()
+                .Property(t => t.TagID)
+                .ValueGeneratedNever();
+
             // Composite primary key for NewsTag
             modelBuilder.Entity<NewsTag>()
                 .HasKey(nt => new { nt.NewsArticleID, nt.TagID });

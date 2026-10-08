@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace _24_NguyenManhCuong_Assignment01_BackEnd.Controllers
 {
-    [Route("odata/[controller]")]
     public class TagsController : ODataController
     {
         private readonly ITagService _service;
@@ -15,15 +14,15 @@ namespace _24_NguyenManhCuong_Assignment01_BackEnd.Controllers
             _service = service;
         }
 
-        [HttpGet]
+        [HttpGet("odata/Tags")]
         [EnableQuery(PageSize = 100)]
         public IActionResult Get()
         {
             return Ok(_service.GetAll());
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        [HttpGet("odata/Tags/{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
             var tag = await _service.GetByIdAsync(id);
             if (tag == null) return NotFound(new { message = $"Tag with ID {id} not found." });

@@ -8,6 +8,7 @@ namespace _24_NguyenManhCuong_Assignment01_BackEnd.Models
     public class SystemAccount
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public short AccountID { get; set; }
 
         [MaxLength(100)]

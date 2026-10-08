@@ -11,7 +11,6 @@ namespace _24_NguyenManhCuong_Assignment01_BackEnd.Controllers
     /// Category management OData Controller.
     /// GET is public; CUD requires Staff or Lecturer role.
     /// </summary>
-    [Route("odata/[controller]")]
     public class CategoriesController : ODataController
     {
         private readonly ICategoryService _service;
@@ -21,7 +20,7 @@ namespace _24_NguyenManhCuong_Assignment01_BackEnd.Controllers
             _service = service;
         }
 
-        [HttpGet]
+        [HttpGet("odata/Categories")]
         [EnableQuery(PageSize = 100)]
         [AllowAnonymous]
         public IActionResult Get()
@@ -29,17 +28,17 @@ namespace _24_NguyenManhCuong_Assignment01_BackEnd.Controllers
             return Ok(_service.GetAll());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("odata/Categories/{id}")]
         [EnableQuery]
         [AllowAnonymous]
-        public async Task<IActionResult> Get(short id)
+        public async Task<IActionResult> GetById(short id)
         {
             var category = await _service.GetByIdAsync(id);
             if (category == null) return NotFound(new { message = $"Category with ID {id} not found." });
             return Ok(category);
         }
 
-        [HttpPost]
+        [HttpPost("odata/Categories")]
         [Authorize(Roles = "Staff,Lecturer")]
         public async Task<IActionResult> Post([FromBody] Category category)
         {
@@ -48,7 +47,7 @@ namespace _24_NguyenManhCuong_Assignment01_BackEnd.Controllers
             return Created($"odata/Categories({created.CategoryID})", created);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("odata/Categories/{id}")]
         [Authorize(Roles = "Staff,Lecturer")]
         public async Task<IActionResult> Put(short id, [FromBody] Category category)
         {
@@ -58,7 +57,7 @@ namespace _24_NguyenManhCuong_Assignment01_BackEnd.Controllers
             return Ok(updated);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("odata/Categories/{id}")]
         [Authorize(Roles = "Staff,Lecturer")]
         public async Task<IActionResult> Delete(short id)
         {

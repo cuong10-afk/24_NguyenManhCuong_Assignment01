@@ -12,7 +12,6 @@ namespace _24_NguyenManhCuong_Assignment01_BackEnd.Controllers
     /// Admin: full access. Staff: view/update own profile.
     /// </summary>
     [Authorize]
-    [Route("odata/[controller]")]
     public class SystemAccountsController : ODataController
     {
         private readonly ISystemAccountService _service;
@@ -22,7 +21,7 @@ namespace _24_NguyenManhCuong_Assignment01_BackEnd.Controllers
             _service = service;
         }
 
-        [HttpGet]
+        [HttpGet("odata/SystemAccounts")]
         [Authorize(Roles = "Admin")]
         [EnableQuery(PageSize = 100)]
         public IActionResult Get()
@@ -30,10 +29,9 @@ namespace _24_NguyenManhCuong_Assignment01_BackEnd.Controllers
             return Ok(_service.GetAll());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("odata/SystemAccounts/{id}")]
         [Authorize(Roles = "Admin,Staff")]
-        [EnableQuery]
-        public async Task<IActionResult> Get(short id)
+        public async Task<IActionResult> GetById(short id)
         {
             var userRole = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
             var userIdStr = User.FindFirst("AccountID")?.Value;
@@ -47,7 +45,7 @@ namespace _24_NguyenManhCuong_Assignment01_BackEnd.Controllers
             return Ok(account);
         }
 
-        [HttpPost]
+        [HttpPost("odata/SystemAccounts")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Post([FromBody] SystemAccount account)
         {
@@ -56,7 +54,7 @@ namespace _24_NguyenManhCuong_Assignment01_BackEnd.Controllers
             return Created($"odata/SystemAccounts({created.AccountID})", created);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("odata/SystemAccounts/{id}")]
         [Authorize(Roles = "Admin,Staff")]
         public async Task<IActionResult> Put(short id, [FromBody] SystemAccount account)
         {
@@ -81,7 +79,7 @@ namespace _24_NguyenManhCuong_Assignment01_BackEnd.Controllers
             return Ok(updated);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("odata/SystemAccounts/{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(short id)
         {

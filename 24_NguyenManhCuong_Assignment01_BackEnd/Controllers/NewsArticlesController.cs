@@ -13,7 +13,6 @@ namespace _24_NguyenManhCuong_Assignment01_BackEnd.Controllers
     /// GET active articles is public. All other CUD actions require Staff/Lecturer.
     /// Report generation requires Admin.
     /// </summary>
-    [Route("odata/[controller]")]
     public class NewsArticlesController : ODataController
     {
         private readonly INewsArticleService _service;
@@ -23,7 +22,7 @@ namespace _24_NguyenManhCuong_Assignment01_BackEnd.Controllers
             _service = service;
         }
 
-        [HttpGet]
+        [HttpGet("odata/NewsArticles")]
         [EnableQuery(PageSize = 100)]
         [AllowAnonymous]
         public IActionResult Get()
@@ -31,16 +30,16 @@ namespace _24_NguyenManhCuong_Assignment01_BackEnd.Controllers
             return Ok(_service.GetAll());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("odata/NewsArticles/{id}")]
         [AllowAnonymous]
-        public async Task<IActionResult> Get(string id)
+        public async Task<IActionResult> GetById(string id)
         {
             var article = await _service.GetByIdAsync(id);
             if (article == null) return NotFound(new { message = $"NewsArticle with ID '{id}' not found." });
             return Ok(article);
         }
 
-        [HttpPost]
+        [HttpPost("odata/NewsArticles")]
         [Authorize(Roles = "Staff,Lecturer")]
         public async Task<IActionResult> Post([FromBody] NewsArticleRequest request)
         {
@@ -63,7 +62,7 @@ namespace _24_NguyenManhCuong_Assignment01_BackEnd.Controllers
             return Created($"odata/NewsArticles('{created.NewsArticleID}')", created);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("odata/NewsArticles/{id}")]
         [Authorize(Roles = "Staff,Lecturer")]
         public async Task<IActionResult> Put(string id, [FromBody] NewsArticleRequest request)
         {
@@ -87,7 +86,7 @@ namespace _24_NguyenManhCuong_Assignment01_BackEnd.Controllers
             return Ok(updated);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("odata/NewsArticles/{id}")]
         [Authorize(Roles = "Staff,Lecturer")]
         public async Task<IActionResult> Delete(string id)
         {
@@ -96,7 +95,7 @@ namespace _24_NguyenManhCuong_Assignment01_BackEnd.Controllers
             return NoContent();
         }
 
-        [HttpGet("ByCreator/{accountId}")]
+        [HttpGet("odata/NewsArticles/ByCreator/{accountId}")]
         [Authorize]
         public async Task<IActionResult> GetByCreator(short accountId)
         {
@@ -104,7 +103,7 @@ namespace _24_NguyenManhCuong_Assignment01_BackEnd.Controllers
             return Ok(articles);
         }
 
-        [HttpPost("Report")]
+        [HttpPost("odata/NewsArticles/Report")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetReport([FromBody] ReportRequest request)
         {
